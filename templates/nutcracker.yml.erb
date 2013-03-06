@@ -1,0 +1,16 @@
+alpha:
+<% if defined?(bind_address) %>
+  listen: <%= bind_address %>
+<% end %>
+<% if defined?(hash) %>
+ hash: <%= hash %>
+<% end %>
+  distribution: ketama
+  auto_eject_hosts: true
+  redis: true
+  server_retry_timeout: 2000
+  server_failure_limit: 1
+  servers:
+  <% servers.each do |server| %>
+    - <%= server %>
+  <% end %>

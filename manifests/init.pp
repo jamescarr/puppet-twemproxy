@@ -29,17 +29,30 @@
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# James R. Carr <james.r.carr@gmail.com>
 #
 # === Copyright
 #
 # Copyright 2013 Your name here, unless otherwise noted.
 #
-class twemproxy {
+class twemproxy(
+  $hostaddress='127.0.0.1',
+  $port='22121',
+  $hash='fnv1a_64',
+  $servers=[]
+) {
+  $bind_address = "${hostaddress}:${port}"
+
+  file { 'twemproxy-package':
+    ensure => 'present',
+    path   => '/tmp/nutcracker_0.2.3-1_amd64.deb',
+    source => 'puppet:///modules/twemproxy/nutcracker_0.2.3-1_amd64.deb'
+  }
   package { 'puppet-dashboard':
     provider => 'dpkg',
     ensure   => latest,
-    source   => 'puppet:///modules/twemproxy/nutcracker_0.2.3-1_amd64.deb'
+    source   => '/tmp/nutcracker_0.2.3-1_amd64.deb'
+    require  => File['twemproxy-package'],
   }
 
   file { '/etc/nutcracker':
